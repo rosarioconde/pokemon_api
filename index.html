@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Consumiendo api pokemon</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-4">API con pokemon</h1>
+        <p class="lead">❤ </p>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="card-deck w-75 mx-auto" id="pokeList">
+            <div class="card" id="pokemon-1">
+                <img src="" class="card-img-top img-thumbnail img-fluid" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title"></h5>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <button type="button" class="btn btn-block btn-outline-primary" onclick="consultarPokemones()">Comenzar</button>
+                    <p class="card-text"> VS </p>
+                </div>
+            </div>
+
+            <div class="card" id="pokemon-2">
+                <img src="" class="card-img-top img-thumbnail img-fluid" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title"></h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    let lista = document.getElementById("pokeList")
+// `cadena de texto` datos dinamicos en una cadena de texto..template literals
+    function consultarPokemon(id, num) {
+        fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
+         .then(function (response) {
+                //console.log(response)
+                //para que el navegador lo entienda, convertirlo a formato json
+           response.json()
+                //si sale todo ok
+             .then(function (pokemon) {
+                crearPokemon(pokemon, num)
+             })
+        })
+    }
+    //llamar funcion
+   // consultarPokemon(25)
+    //CREAR 2 POKEMONES RANDOM
+    function consultarPokemones() {
+        let primerId = Math.round(Math.random() * 150)
+        let segundoId = Math.round(Math.random() * 150)
+
+        consultarPokemon(primerId, 1)
+        consultarPokemon(segundoId, 2)
+    }
+
+    function crearPokemon(pokemon, num){
+        //converti la data en html
+        let item = lista.querySelector(`#pokemon-${num}`)
+
+        let imagen = item.getElementsByTagName("img")[0]
+        imagen.setAttribute("src", pokemon.sprites.front_default)
+
+
+        let nombre = item.getElementsByTagName("h5")[0]
+        nombre.textContent = pokemon.name
+    }
+
+
+    consultarPokemones()
+
+</script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+</body>
+</html>
